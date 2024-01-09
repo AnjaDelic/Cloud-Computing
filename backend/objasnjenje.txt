@@ -1,0 +1,7 @@
+Koristim MONGO bazu podataka
+Svaka gradska biblioteka ima svoju bazu sa skracenicom grada biblioteka_gradaNS/BG/NIS
+Centralna biblioteka, centralna_biblioteka,  vodi racuna o clanovima upisanim u biblioteke. 
+        Jedan clan se ne moze vise puta uclaniti u biblioteke
+Gradske biblioteke vode racuna o dostupnim knjigama i pozajmicama za svaki grad
+Gradske biblioteke komuniciraju sa centralnom bibliotekom kako bi dobile informaciju o kolicini knjiga koju je clan iznajmio 
+        ako je iznajmio manje od 3 knjige moze jos da iznajmi u suprotnom ne moze
