@@ -1,0 +1,18 @@
+/* MembersList.css */
+
+.members-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .members-table th, .members-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .members-table th {
+    background-color: #f2f2f2;
+  }
+  

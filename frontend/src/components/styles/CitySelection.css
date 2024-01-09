@@ -1,0 +1,12 @@
+.city-selection-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .city-buttons button {
+    font-size: 18px;
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,42 @@
+/* styles/NavigationLinks.css */
+
+.navbar {
+  background-color: #3498db;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-link {
+  margin-right: 20px;
+  font-size: 18px;
+  color: #2c3e50; /* Darker color for better visibility */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ecf0f1;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* Add a media query for responsiveness */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+  }
+
+  .nav-link {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
