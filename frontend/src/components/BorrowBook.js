@@ -7,6 +7,12 @@ import './styles/NavigationLinks.css';
 const BorrowBook = () => {
   const history = useHistory(); // Initialize the useHistory hook
 
+  const [city, setCity] = useState('novi_sad'); // Default city is Novi Sad
+
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
+  };
+
   const [book, setBook] = useState({
     bookTitle: '',
     author: '',
@@ -21,11 +27,13 @@ const BorrowBook = () => {
 
   const handleBorrow = async () => {
     try {
-      const response = await axios.post('http://localhost:8081/borrow', book);
+      const endpoint = getCityEndpoint(city);
+
+      const response = await axios.post(endpoint + '/borrow', book);
       if (response.data.status === 'success') {
         alert('Book borrowed successfully!');
         // Redirect to the Welcome Page after successful borrowing
-        history.push('/welcome');
+        history.push('/');
       } else {
         alert('Failed to borrow book.');
       }
@@ -34,9 +42,34 @@ const BorrowBook = () => {
     }
   };
 
+  const getCityEndpoint = (selectedCity) => {
+    switch (selectedCity) {
+      case 'novi_sad':
+        return 'http://localhost:8081';
+      case 'beograd':
+        return 'http://localhost:8082';
+      case 'nis':
+        return 'http://localhost:8083';
+      default:
+        return 'http://localhost:8081'; // Default to Novi Sad
+    }
+  };
+
   return (
     <div className="borrow-book-container">
       <h2>Borrow Book</h2>
+      
+      {/* City Selection Dropdown */}
+      <div className="city-selection">
+        <label>Select City: </label>
+        <select value={city} onChange={handleCityChange}>
+          <option value="novi_sad">Novi Sad</option>
+          <option value="beograd">Beograd</option>
+          <option value="nis">Nis</option>
+        </select>
+      </div>
+
+      {/* Borrow Book Form */}
       <form className="borrow-form">
         <input type="text" name="bookTitle" placeholder="Book Title" onChange={handleInputChange} />
         <input type="text" name="author" placeholder="Author" onChange={handleInputChange} />
