@@ -22,7 +22,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD      
     - name: Build and push novi sad
       run: |
-        docker build -t gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
+        docker build -t delicanja/gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
         docker push delicanja/gradska-biblioteka-ns:latest
     - name: Build and push beograd
       run: |
