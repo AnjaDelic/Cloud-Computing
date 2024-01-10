@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  gradskaBibliotekaNS:
+    image: delicanja/gradska-biblioteka-ns:latest
+    build:
+      context: ./backend/gradskaBibliotekaNS
+    ports:
+      - "8081:8081"
+
+  gradskaBibliotekaBG:
+    image: delicanja/gradska-biblioteka-bg:latest
+    build:
+      context: ./backend/gradskaBibliotekaBG
+    ports:
+      - "8082:8082"
+
+  gradskaBibliotekaNIS:
+    image: delicanja/gradska-biblioteka-nis:latest
+    build:
+      context: ./backend/gradskaBibliotekaNIS
+    ports:
+      - "8083:8083"
+
+  centralnaBiblioteka:
+    image: delicanja/centralna-biblioteka:latest
+    build:
+      context: ./backend/centralnaBiblioteka
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: delicanja/frontend:latest
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gradskaBibliotekaNS
+      - gradskaBibliotekaBG
+      - gradskaBibliotekaNIS
+      - centralnaBiblioteka
