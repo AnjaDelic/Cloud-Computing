@@ -1,4 +1,4 @@
-name: Build and push
+name: Novi Sad
 
 on:
   push:
@@ -24,7 +24,20 @@ jobs:
       run: |
         docker build -t delicanja/gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
         docker push delicanja/gradska-biblioteka-ns:latest
+    - name: Build and push beograd
+      run: |
+        docker build -t delicanja/gradska-biblioteka-bg:latest -f ./backend/gradskaBibliotekaBG/Dockerfile .
+        docker push delicanja/gradska-biblioteka-bg:latest
+    - name: Build and push nis
+      run: |
+        docker build -t delicanja/gradska-biblioteka-nis:latest -f ./backend/gradskaBibliotekaNIS/Dockerfile .
+        docker push delicanja/gradska-biblioteka-nis:latest
+
     - name: Build and push centralna
       run: |
         docker build -t delicanja/centralna-biblioteka:latest -f ./backend/centralnaBiblioteka/Dockerfile .
         docker push delicanja/centralna-biblioteka:latest
+    - name: Build and push frontend
+      run: |
+        docker build -t delicanja/frontend:latest -f ./frontend/Dockerfile .
+        docker push delicanja/frontend:latest
