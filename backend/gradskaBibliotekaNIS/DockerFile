@@ -1,12 +1,12 @@
 FROM golang:latest
 
-WORKDIR /app
+WORKDIR /app/gradskaBibliotekaNIS
 
-COPY go.mod go.sum ./
+COPY ./backend/gradskaBibliotekaNIS/go.mod ./backend/gradskaBibliotekaNIS/go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY ./backend/gradskaBibliotekaNIS/ .
 
 RUN go build -o gradskaBibliotekaNIS
 

@@ -1,19 +1,15 @@
 FROM golang:latest
 
-WORKDIR /app
+WORKDIR /app/gradskaBibliotekaNS
 
-COPY go.mod go.sum ./
+COPY ./backend/gradskaBibliotekaNS/go.mod ./backend/gradskaBibliotekaNS/go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY ./backend/gradskaBibliotekaNS/ .
 
 RUN go build -o gradskaBibliotekaNS
-
 
 EXPOSE 8081
 
 CMD ["./gradskaBibliotekaNS"]
-
-
-

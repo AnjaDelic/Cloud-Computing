@@ -28,14 +28,16 @@ type Member struct {
 }
 
 func init() {
-	// Inicijalizacija povezivanja sa bazom podataka centralne biblioteke
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-	client, err := mongo.Connect(context.Background(), clientOptions)
+	// Inicijalizacija povezivanja sa bazom podataka grada
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017") // Use the service name as the hostname
+
+	// Inicijalizacija povezivanja sa centralnom bazom
+	centralClient, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to connect to central database:", err)
 	}
 
-	centralDB = client.Database("centralna_biblioteka")
+	centralDB = centralClient.Database("centralna_biblioteka")
 }
 
 func registerMember(w http.ResponseWriter, r *http.Request) {

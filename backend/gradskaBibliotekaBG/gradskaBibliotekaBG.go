@@ -48,13 +48,13 @@ type Member struct {
 
 func init() {
 	// Inicijalizacija povezivanja sa bazom podataka grada
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017") // Use the service name as the hostname
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal("Failed to connect to city database:", err)
 	}
 
-	cityDB = client.Database("biblioteka_gradaBG")
+	cityDB = client.Database("biblioteka_gradaNS")
 
 	// Inicijalizacija povezivanja sa centralnom bazom
 	centralClient, err := mongo.Connect(context.Background(), clientOptions)

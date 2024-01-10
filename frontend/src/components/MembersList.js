@@ -9,7 +9,7 @@ const MembersList = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/members');
+        const response = await axios.get('http://centralnaBiblioteka:8080/members');
         setMembers(response.data);
       } catch (error) {
         console.error('Error fetching members:', error);

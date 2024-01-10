@@ -1,13 +1,13 @@
 
 FROM node:14
 
-WORKDIR /app
+WORKDIR /app/frontend
 
 COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./frontend/ .
 
 RUN npm run build
 

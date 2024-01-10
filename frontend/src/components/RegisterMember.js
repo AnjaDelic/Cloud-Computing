@@ -17,7 +17,7 @@ const RegisterMember = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/register', member);
+      const response = await axios.post('http://centralnaBiblioteka:8080/register', member);
       console.log(response.data);
 
       // Reload the page after successful registration

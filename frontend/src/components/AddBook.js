@@ -49,13 +49,13 @@ const AddBook = () => {
   const getCityEndpoint = (selectedCity) => {
     switch (selectedCity) {
       case 'novi_sad':
-        return 'http://localhost:8081/addBook';
+        return 'http://gradskaBibliotekaNS:8081/addBook';
       case 'beograd':
-        return 'http://localhost:8082/addBook';
+        return 'http://gradskaBibliotekaBG:8082/addBook';
       case 'nis':
-        return 'http://localhost:8083/addBook';
+        return 'http://gradskaBibliotekaNIS:8083/addBook';
       default:
-        return 'http://localhost:8081/addBook'; // Default to Novi Sad
+        return 'http://gradskaBibliotekaNS:8081/addBook'; // Default to Novi Sad
     }
   };
 

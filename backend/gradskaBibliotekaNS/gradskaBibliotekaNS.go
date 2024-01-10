@@ -48,7 +48,7 @@ type Member struct {
 
 func init() {
 	// Inicijalizacija povezivanja sa bazom podataka grada
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatal("Failed to connect to city database:", err)
