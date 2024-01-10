@@ -10,16 +10,16 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Install Docker
+
+
+    - uses: actions/checkout@v4.1.1
+    - name: docker login
+
+      env: 
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
-        sudo apt-get update
-        sudo apt-get install -y docker.io
-    - name: Checkout repository
-      uses: actions/checkout@v4.1.1
-
-    - name: Login to Docker Hub
-      run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD      
     - name: Build and push Docker images
       run: |
         docker build -t delicanja/gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
