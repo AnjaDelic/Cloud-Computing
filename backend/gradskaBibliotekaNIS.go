@@ -176,11 +176,98 @@ func addBook(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func returnBook(w http.ResponseWriter, r *http.Request) {
+	var returnedBook BookLoan
+	err := json.NewDecoder(r.Body).Decode(&returnedBook)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Provera da li član sa datim memberNumber postoji u centralnoj biblioteci
+	var member Member
+	err = centralDB.Collection("members").FindOne(context.Background(), bson.M{"_id": returnedBook.MemberNumber}).Decode(&member)
+	if err == mongo.ErrNoDocuments {
+		// Član ne postoji, šaljem odgovor o neuspešnom vraćanju knjige
+		response := map[string]interface{}{"status": "failure", "message": "Član ne postoji"}
+		json.NewEncoder(w).Encode(response)
+		return
+	} else if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Provera da li knjiga postoji u book_loans
+	var loanedBook BookLoan
+	err = cityDB.Collection("book_loans").FindOne(context.Background(), bson.M{
+		"bookTitle":    returnedBook.BookTitle,
+		"author":       returnedBook.Author,
+		"isbn":         returnedBook.ISBN,
+		"memberNumber": returnedBook.MemberNumber,
+	}).Decode(&loanedBook)
+	if err == mongo.ErrNoDocuments {
+		// Pozajmica ne postoji, šaljem odgovor o neuspešnom vraćanju knjige
+		response := map[string]interface{}{"status": "failure", "message": "Knjiga nije pozajmljena ovom članu"}
+		json.NewEncoder(w).Encode(response)
+		return
+	} else if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Ažuriranje broja pozajmljenih knjiga kod člana
+	if member.LoansCount > 0 {
+		member.LoansCount--
+
+		// Ažuriranje broja dostupnih kopija knjige
+		_, err := centralDB.Collection("members").UpdateOne(context.Background(),
+			bson.M{"_id": returnedBook.MemberNumber},
+			bson.M{"$set": bson.M{"loansCount": member.LoansCount}},
+		)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Brisanje pozajmice iz baze podataka
+		_, err = cityDB.Collection("book_loans").DeleteOne(context.Background(),
+			bson.M{"_id": loanedBook.ID},
+		)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Ažuriranje broja dostupnih kopija knjige
+		_, err = cityDB.Collection("available_books").UpdateOne(context.Background(),
+			bson.M{
+				"bookTitle": returnedBook.BookTitle,
+				"author":    returnedBook.Author,
+				"isbn":      returnedBook.ISBN,
+			},
+			bson.M{"$inc": bson.M{"availableCount": 1}},
+		)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Slanje odgovora o uspešnom vraćanju knjige
+		response := map[string]interface{}{"status": "success"}
+		json.NewEncoder(w).Encode(response)
+	} else {
+		// Greška ako član nije imao nijednu pozajmicu
+		response := map[string]interface{}{"status": "failure", "message": "Član nema pozajmljenih knjiga"}
+		json.NewEncoder(w).Encode(response)
+	}
+}
+
 func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/borrow", borrowBook).Methods("POST")
 	r.HandleFunc("/addBook", addBook).Methods("POST")
+	r.HandleFunc("/returnBook", returnBook).Methods("POST")
 
 	// Allow CORS
 	headersOk := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
