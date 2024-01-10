@@ -22,11 +22,11 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD      
     - name: Build and push Docker images
       run: |
-        docker build -t delicanja/gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
-        docker build -t delicanja/gradska-biblioteka-bg:latest -f ./backend/gradskaBibliotekaBG/Dockerfile .
-        docker build -t delicanja/gradska-biblioteka-nis:latest -f ./backend/gradskaBibliotekaNIS/Dockerfile .
-        docker build -t delicanja/centralna-biblioteka:latest -f ./backend/centralnaBiblioteka/Dockerfile .
-        docker build -t delicanja/frontend:latest -f ./frontend/Dockerfile .
+        docker build -t gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
+        docker build -t gradska-biblioteka-bg:latest -f ./backend/gradskaBibliotekaBG/Dockerfile .
+        docker build -t gradska-biblioteka-nis:latest -f ./backend/gradskaBibliotekaNIS/Dockerfile .
+        docker build -t centralna-biblioteka:latest -f ./backend/centralnaBiblioteka/Dockerfile .
+        docker build -t frontend:latest -f ./frontend/Dockerfile .
 
         docker push delicanja/gradska-biblioteka-ns:latest
         docker push delicanja/gradska-biblioteka-bg:latest
