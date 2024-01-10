@@ -11,7 +11,7 @@ COPY ./backend/gradskaBibliotekaBG/ .
 RUN go build -o gradskaBibliotekaBG
 
 
-EXPOSE 8081
+EXPOSE 8082
 
 CMD ["./gradskaBibliotekaBG"]
 

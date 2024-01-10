@@ -24,8 +24,7 @@ jobs:
       run: |
         docker build -t delicanja/gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
         docker push delicanja/gradska-biblioteka-ns:latest
-    - name: Build and push beograd
-      run: |
+
         docker build -t delicanja/gradska-biblioteka-bg:latest -f ./backend/gradskaBibliotekaBG/Dockerfile .
         docker push delicanja/gradska-biblioteka-bg:latest
     - name: Build and push nis
