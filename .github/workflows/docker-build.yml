@@ -20,7 +20,24 @@ jobs:
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD      
-    - name: Build and push Docker images
+    - name: Build and push novi sad
       run: |
         docker build -t gradska-biblioteka-ns:latest -f ./backend/gradskaBibliotekaNS/Dockerfile .
         docker push delicanja/gradska-biblioteka-ns:latest
+    - name: Build and push beograd
+      run: |
+        docker build -t gradska-biblioteka-bg:latest -f ./backend/gradskaBibliotekaBG/Dockerfile .
+        docker push delicanja/gradska-biblioteka-bg:latest
+    - name: Build and push nis
+      run: |
+        docker build -t gradska-biblioteka-nis:latest -f ./backend/gradskaBibliotekaNIS/Dockerfile .
+        docker push delicanja/gradska-biblioteka-nis:latest
+
+    - name: Build and push centralna
+      run: |
+        docker build -t centralna-biblioteka:latest -f ./backend/centralnaBiblioteka/Dockerfile .
+        docker push delicanja/centralna-biblioteka:latest
+    - name: Build and push frontend
+      run: |
+        docker build -t frontend:latest -f ./frontend/Dockerfile .
+        docker push delicanja/frontend:latest
