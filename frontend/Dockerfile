@@ -1,15 +1,12 @@
-FROM node:16
+FROM node:14
 
 WORKDIR /app/frontend
 
 COPY package*.json ./
 
-RUN npm install -g react-scripts
-
-
 RUN npm install
 
-COPY . .
+COPY ./frontend .
 
 EXPOSE 3000
 
