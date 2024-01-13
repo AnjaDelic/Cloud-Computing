@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: biblioteka-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: ns.biblioteka
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gradska-biblioteka-ns-service
+                port:
+                  number: 8081
+    - host: mongo
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mongodb
+                port:
+                  number: 27017
+    - host: bg.biblioteka
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gradska-biblioteka-bg-service
+                port:
+                  number: 8082
+    - host: nis.biblioteka
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gradska-biblioteka-nis-service
+                port:
+                  number: 8083
+    - host: centralna.biblioteka
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: centralna-biblioteka-service
+                port:
+                  number: 8080
+

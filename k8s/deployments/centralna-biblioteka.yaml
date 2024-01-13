@@ -1,0 +1,28 @@
+# centralna-biblioteka-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centralna-biblioteka-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centralna-biblioteka
+  template:
+    metadata:
+      labels:
+        app: centralna-biblioteka
+    spec:
+      containers:
+        - name: centralna-biblioteka
+          image: delicanja/centralna-biblioteka:latest
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: centralna-biblioteka-data
+              mountPath: /app/backend/centralnaBiblioteka
+      volumes:
+        - name: centralna-biblioteka-data
+          persistentVolumeClaim:
+            claimName: centralna-biblioteka-pvc
+

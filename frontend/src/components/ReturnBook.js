@@ -46,7 +46,7 @@ const ReturnBook = () => {
       case 'nis':
         return 'http://localhost:8083/returnBook';
       default:
-        return 'http://v:8081/returnBook'; // Default to Novi Sad
+        return 'http://localhost:8081/returnBook'; // Default to Novi Sad
     }
   };
 

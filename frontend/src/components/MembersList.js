@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './styles/MemberList.css'; 
+import './styles/MemberList.css';
 import './styles/NavigationLinks.css';
 
 const MembersList = () => {
@@ -22,30 +22,34 @@ const MembersList = () => {
   return (
     <div>
       <h2>Members List</h2>
-      <table className="members-table">
-        <thead>
-          <tr>
-            <th>Member ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Address</th>
-            <th>JMBG</th>
-            <th>Loans Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {members.map((member) => (
-            <tr key={member.id}>
-              <td>{member.id}</td>
-              <td>{member.firstName}</td>
-              <td>{member.lastName}</td>
-              <td>{member.address}</td>
-              <td>{member.jmbg}</td>
-              <td>{member.loansCount}</td>
+      {members && members.length > 0 ? (
+        <table className="members-table">
+          <thead>
+            <tr>
+              <th>Member ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Address</th>
+              <th>JMBG</th>
+              <th>Loans Count</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {members.map((member) => (
+              <tr key={member.id}>
+                <td>{member.id}</td>
+                <td>{member.firstName}</td>
+                <td>{member.lastName}</td>
+                <td>{member.address}</td>
+                <td>{member.jmbg}</td>
+                <td>{member.loansCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No members available</p>
+      )}
     </div>
   );
 };

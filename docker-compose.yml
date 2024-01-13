@@ -33,13 +33,4 @@ services:
     depends_on:
       - mongodb
 
-  frontend:
-    image: delicanja/frontend:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - gradskaBibliotekaNS
-      - gradskaBibliotekaBG
-      - gradskaBibliotekaNIS
-      - centralnaBiblioteka
-      - mongodb
+

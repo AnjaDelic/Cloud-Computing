@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradska-biblioteka-nis-service
+spec:
+  selector:
+    app: gradska-biblioteka-nis
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8083

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradska-biblioteka-nis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradska-biblioteka-nis
+  template:
+    metadata:
+      labels:
+        app: gradska-biblioteka-nis
+    spec:
+      containers:
+        - name: gradska-biblioteka-nis
+          image: delicanja/gradska-biblioteka-nis:latest
+          ports:
+            - containerPort: 8083
+          volumeMounts:
+            - name: gradska-biblioteka-nis-data
+              mountPath: /app/backend/gradskaBibliotekaNIS
+      volumes:
+        - name: gradska-biblioteka-nis-data
+          persistentVolumeClaim:
+            claimName: gradska-biblioteka-nis-pvc

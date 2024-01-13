@@ -1,12 +1,10 @@
 FROM node:14
 
-WORKDIR /app/frontend
+WORKDIR /app
 
-COPY package*.json ./
+COPY . .
 
 RUN npm install
-
-COPY ./frontend .
 
 EXPOSE 3000
 

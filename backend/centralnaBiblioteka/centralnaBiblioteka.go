@@ -1,5 +1,3 @@
-// centralnaBiblioteka.go
-
 package main
 
 import (
@@ -45,6 +43,7 @@ func registerMember(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&newMember)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Printf("Error decoding JSON request: %v", err)
 		return
 	}
 
@@ -61,6 +60,7 @@ func registerMember(w http.ResponseWriter, r *http.Request) {
 		_, err = centralDB.Collection("members").InsertOne(context.Background(), newMember)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			log.Printf("Error inserting new member into the database: %v", err)
 			return
 		}
 
@@ -68,14 +68,19 @@ func registerMember(w http.ResponseWriter, r *http.Request) {
 		response := map[string]interface{}{"status": "success", "memberID": newMember.ID}
 		json.NewEncoder(w).Encode(response)
 
+		log.Printf("New member registered successfully. Member ID: %s", newMember.ID)
+
 	case err != nil:
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Error checking if member already exists: %v", err)
 		return
 
 	default:
 		// Član već postoji, šaljem odgovor o neuspešnoj registraciji
 		response := map[string]interface{}{"status": "failure", "message": "Član već postoji"}
 		json.NewEncoder(w).Encode(response)
+
+		log.Printf("Member registration failed. Member with JMBG %s already exists.", newMember.JMBG)
 	}
 }
 
@@ -83,6 +88,7 @@ func getAllMembers(w http.ResponseWriter, r *http.Request) {
 	cursor, err := centralDB.Collection("members").Find(context.Background(), bson.M{})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Error retrieving all members from the database: %v", err)
 		return
 	}
 	defer cursor.Close(context.Background())
@@ -92,6 +98,7 @@ func getAllMembers(w http.ResponseWriter, r *http.Request) {
 		var member Member
 		if err := cursor.Decode(&member); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			log.Printf("Error decoding member data: %v", err)
 			return
 		}
 		members = append(members, member)
@@ -99,6 +106,7 @@ func getAllMembers(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(members)
 }
+
 func main() {
 
 	r := mux.NewRouter()

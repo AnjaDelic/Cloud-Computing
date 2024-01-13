@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradska-biblioteka-bg-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradska-biblioteka-bg
+  template:
+    metadata:
+      labels:
+        app: gradska-biblioteka-bg
+    spec:
+      containers:
+        - name: gradska-biblioteka-bg
+          image: delicanja/gradska-biblioteka-bg:latest
+          ports:
+            - containerPort: 8082
+          volumeMounts:
+            - name: gradska-biblioteka-bg-data
+              mountPath: /app/backend/gradskaBibliotekaBG
+      volumes:
+        - name: gradska-biblioteka-bg-data
+          persistentVolumeClaim:
+            claimName: gradska-biblioteka-bg-pvc
+
