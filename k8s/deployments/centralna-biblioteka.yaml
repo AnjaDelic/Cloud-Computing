@@ -21,8 +21,17 @@ spec:
           volumeMounts:
             - name: centralna-biblioteka-data
               mountPath: /app/backend/centralnaBiblioteka
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db/centralna
       volumes:
         - name: centralna-biblioteka-data
           persistentVolumeClaim:
             claimName: centralna-biblioteka-pvc
-
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-centralna-pvc

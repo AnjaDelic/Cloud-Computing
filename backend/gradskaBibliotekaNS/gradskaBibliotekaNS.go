@@ -66,10 +66,12 @@ func init() {
 }
 
 func borrowBook(w http.ResponseWriter, r *http.Request) {
+	log.Println("Received request to borrow a book.")
 	var newBookLoan BookLoan
 	err := json.NewDecoder(r.Body).Decode(&newBookLoan)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Printf("Error while processing borrow request: %s\n", err)
 		return
 	}
 
@@ -79,6 +81,7 @@ func borrowBook(w http.ResponseWriter, r *http.Request) {
 	if err == mongo.ErrNoDocuments {
 		// Član ne postoji, šaljem odgovor o neuspešnom zaduživanju
 		response := map[string]interface{}{"status": "failure", "message": "Član ne postoji"}
+		log.Printf("Clan ne postoji\n")
 		json.NewEncoder(w).Encode(response)
 		return
 	} else if err != nil {
@@ -96,6 +99,7 @@ func borrowBook(w http.ResponseWriter, r *http.Request) {
 	if err == mongo.ErrNoDocuments || availableBook.AvailableCount == 0 {
 		// Knjiga ne postoji ili nema raspoloživih kopija, šaljem odgovor o neuspešnom zaduživanju
 		response := map[string]interface{}{"status": "failure", "message": "Knjiga nije dostupna"}
+		log.Printf("Knjiga ne postoji ili nema raspolozivih kopija \n")
 		json.NewEncoder(w).Encode(response)
 		return
 	} else if err != nil {
@@ -148,6 +152,7 @@ func borrowBook(w http.ResponseWriter, r *http.Request) {
 
 		// Slanje odgovora o uspešnom zaduživanju
 		response := map[string]interface{}{"status": "success", "loanID": newBookLoan.ID}
+		log.Printf("Book borrowed successfully. Loan ID: %s\n", newBookLoan.ID)
 		json.NewEncoder(w).Encode(response)
 	} else {
 		// Član je već zadužio maksimalan broj knjiga, šaljem odgovor o neuspešnom zaduživanju
@@ -157,10 +162,13 @@ func borrowBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func addBook(w http.ResponseWriter, r *http.Request) {
+	log.Println("Received request to add a book.")
 	var newAvailableBook AvailableBook
 	err := json.NewDecoder(r.Body).Decode(&newAvailableBook)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Printf("Error decoding addBook request: %s\n", err)
+
 		return
 	}
 
@@ -173,14 +181,19 @@ func addBook(w http.ResponseWriter, r *http.Request) {
 
 	// Slanje odgovora o uspešnom dodavanju knjige
 	response := map[string]interface{}{"status": "success"}
+	log.Println("Book added successfully.")
 	json.NewEncoder(w).Encode(response)
 }
 
 func returnBook(w http.ResponseWriter, r *http.Request) {
+	log.Println("Received request to return a book.")
+
 	var returnedBook BookLoan
 	err := json.NewDecoder(r.Body).Decode(&returnedBook)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Printf("Error decoding returnBook request: %s\n", err)
+
 		return
 	}
 
@@ -190,6 +203,7 @@ func returnBook(w http.ResponseWriter, r *http.Request) {
 	if err == mongo.ErrNoDocuments {
 		// Član ne postoji, šaljem odgovor o neuspešnom vraćanju knjige
 		response := map[string]interface{}{"status": "failure", "message": "Član ne postoji"}
+		log.Println("Clan ne postoji")
 		json.NewEncoder(w).Encode(response)
 		return
 	} else if err != nil {
@@ -208,6 +222,8 @@ func returnBook(w http.ResponseWriter, r *http.Request) {
 	if err == mongo.ErrNoDocuments {
 		// Pozajmica ne postoji, šaljem odgovor o neuspešnom vraćanju knjige
 		response := map[string]interface{}{"status": "failure", "message": "Knjiga nije pozajmljena ovom članu"}
+		log.Println("Pozajmica ne postoji")
+
 		json.NewEncoder(w).Encode(response)
 		return
 	} else if err != nil {
@@ -254,6 +270,8 @@ func returnBook(w http.ResponseWriter, r *http.Request) {
 
 		// Slanje odgovora o uspešnom vraćanju knjige
 		response := map[string]interface{}{"status": "success"}
+		log.Println("Book returned successfully.")
+
 		json.NewEncoder(w).Encode(response)
 	} else {
 		// Greška ako član nije imao nijednu pozajmicu

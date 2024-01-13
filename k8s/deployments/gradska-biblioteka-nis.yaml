@@ -20,7 +20,17 @@ spec:
           volumeMounts:
             - name: gradska-biblioteka-nis-data
               mountPath: /app/backend/gradskaBibliotekaNIS
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db/nis
       volumes:
         - name: gradska-biblioteka-nis-data
           persistentVolumeClaim:
             claimName: gradska-biblioteka-nis-pvc
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-nis-pvc 

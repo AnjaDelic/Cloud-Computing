@@ -20,8 +20,17 @@ spec:
           volumeMounts:
             - name: gradska-biblioteka-ns-data
               mountPath: /app/backend/gradskaBibliotekaNS
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db/ns
       volumes:
         - name: gradska-biblioteka-ns-data
           persistentVolumeClaim:
             claimName: gradska-biblioteka-ns-pvc
-
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-ns-pvc 

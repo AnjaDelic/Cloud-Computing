@@ -20,8 +20,17 @@ spec:
           volumeMounts:
             - name: gradska-biblioteka-bg-data
               mountPath: /app/backend/gradskaBibliotekaBG
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db/bg
       volumes:
         - name: gradska-biblioteka-bg-data
           persistentVolumeClaim:
             claimName: gradska-biblioteka-bg-pvc
-
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-bg-pvc
