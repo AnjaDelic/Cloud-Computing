@@ -51,7 +51,7 @@ const AddBook = () => {
       case 'novi_sad':
         return 'http://localhost:8081/addBook';
       case 'beograd':
-        return 'http://v:8082/addBook';
+        return 'http://localhost:8082/addBook';
       case 'nis':
         return 'http://localhost:8083/addBook';
       default:
